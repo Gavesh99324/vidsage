@@ -1,5 +1,17 @@
 import { ChatAnthropic } from "@langchain/anthropic";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+
+import data from './data.js';
+
+
+const video1 = data[0];
+
+const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 1000,
+    chunkOverlap: 200,
+});
+
 
 const llm = new ChatAnthropic({
     modelName: 'claude-3-7-sonnet-latest',
