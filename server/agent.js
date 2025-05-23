@@ -2,23 +2,32 @@ import { ChatAnthropic } from "@langchain/anthropic";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { MemoryVectorStore } from "@langchain/vectorstores/memory";
 
 
 import data from './data.js';
 
-
+//Data
 const video1 = data[0];
-
 const docs = [new Document({ pageContent: video1.transcript, metadata: {video_id: video1.video_id}})]
 
+//Split the video into chunks
 const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 1000,
     chunkOverlap: 200,
 });
 
+
+//Embed the chunks
 const chunks = await splitter.splitDocuments(docs);
 
-console.log(chunks);
+const embeddings = new OpenAIEmbeddings({
+    modelName: 'text-embedding-3-large'
+});
+
+const vectorStore = new MemoryVectorStore(embeddings);
+
 
 
 const llm = new ChatAnthropic({
