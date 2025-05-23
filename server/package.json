@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@langchain/anthropic": "^0.1.21",
+    "@langchain/community": "^0.3.44",
     "@langchain/core": "^0.3.57",
     "@langchain/langgraph": "^0.2.73",
     "@langchain/openai": "^0.5.11",

@@ -3,8 +3,10 @@ import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 import { OpenAIEmbeddings } from "@langchain/openai";
-import { MemoryVectorStore } from "@langchain/vectorstores/memory";
+import { MemoryVectorStore } from "langchain/vectorstores/memory";
+import dotenv from "dotenv";
 
+dotenv.config();
 
 import data from './data.js';
 
@@ -23,13 +25,20 @@ const splitter = new RecursiveCharacterTextSplitter({
 const chunks = await splitter.splitDocuments(docs);
 
 const embeddings = new OpenAIEmbeddings({
-    modelName: 'text-embedding-3-large'
+    modelName: 'text-embedding-3-large',
+    openAIApiKey: process.env.OPENAI_API_KEY,
 });
+
 
 const vectorStore = new MemoryVectorStore(embeddings);
 
 await vectorStore.addDocuments(chunks);
+console.log(chunks)
 
+//Retrieve the most relevant chunks
+const retrievedDocs = await vectorStore.similaritySearch('What was the finish time of the Norris?', 1);
+console.log('Retrieved docs: --------------------')
+console.log(retrievedDocs)
 
 
 const llm = new ChatAnthropic({
