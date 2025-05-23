@@ -28,6 +28,8 @@ const embeddings = new OpenAIEmbeddings({
 
 const vectorStore = new MemoryVectorStore(embeddings);
 
+await vectorStore.addDocuments(chunks);
+
 
 
 const llm = new ChatAnthropic({
