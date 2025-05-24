@@ -6,6 +6,7 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
+import { MemorySaver } from "@langchain/langgraph";
 
 import dotenv from "dotenv";
 
@@ -46,8 +47,13 @@ const retrieveTool = tool(
     async ({ query }) => {
         console.log('Retrieving docs for query:----------------');
         console.log(query);
+        const retrievedDocs = await vectorStore.similaritySearch(query, 1);
 
-        return 'Norris was first finishing in 33 seconds';
+        const serializedDocs = retrievedDocs
+           .map((doc) => doc.pageContent)
+           .join('\n');
+
+        return serializedDocs;
     }, {
     name: 'retrieve',
     description: 'Retrieve tho most relevant chunks of text from the transcript of a youtube video',
@@ -61,11 +67,21 @@ const llm = new ChatAnthropic({
     anthropicApiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const agent = createReactAgent({ llm, tools: [retrieveTool] });
+const checkpointer = new MemorySaver();
 
+const agent = createReactAgent({ llm, tools: [retrieveTool], checkpointer });
+
+const video_id = "imMbPxcL8NY";
+
+console.log("Q1: What was the finish position and time of Norris?")
 const results = await agent.invoke({
-    messages: [{ role: 'user', content: 'What was the finish time of Norris?' }]
-});
-
+    messages: [
+        { 
+            role: 'user', 
+            content: 'What was the finish time of Norris? (based on video transcript)' 
+        }
+    ]
+  }, 
+  { configurable: { thread_id: 1, video_id }}
+);
 console.log(results.messages.at(-1)?.content);
- 
