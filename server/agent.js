@@ -44,10 +44,24 @@ console.log(retrievedDocs);
 
 // Retrieval tool
 const retrieveTool = tool(
-    async ({ query }) => {
+    async ({ query }, { configurable: { video_id } }) => {
         console.log('Retrieving docs for query:----------------');
-        console.log(query);
-        const retrievedDocs = await vectorStore.similaritySearch(query, 1);
+        console.log(query)
+        console.log(video_id);
+
+        try {
+            const retrievedDocs = await vectorStore.similaritySearch(
+                query, 
+                3, 
+                (doc) => doc.metadata.video_id === video_id
+            );
+        } catch (error) {
+            console.log('Error: --------------------');
+            console.log(error)
+        }
+
+        console.log('Retrieved docs: -------------------');
+        console.log(retrievedDocs);
 
         const serializedDocs = retrievedDocs
            .map((doc) => doc.pageContent)
