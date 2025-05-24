@@ -5,6 +5,7 @@ import { Document } from "@langchain/core/documents";
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { MemorySaver } from "@langchain/langgraph";
+import { vectorStore, addYTVideoToVectorStore } from "./embeddings.js";
 
 import dotenv from "dotenv";
 
@@ -14,6 +15,7 @@ import data from './data.js';
 
 //Data
 const video1 = data[0];
+await addYTVideoToVectorStore(video1);
 
 
 //Retrieve the most relevant chunks
