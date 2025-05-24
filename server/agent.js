@@ -10,8 +10,8 @@ import data from './data.js';
 dotenv.config();
 
 //Data
-const video1 = data[0];
-await addYTVideoToVectorStore(video1);
+await addYTVideoToVectorStore(data[0]);
+await addYTVideoToVectorStore(data[1]);
 
 // Retrieval tool
 const retrieveTool = tool(
@@ -44,14 +44,16 @@ const checkpointer = new MemorySaver();
 
 const agent = createReactAgent({ llm, tools: [retrieveTool], checkpointer });
 
-const video_id = "imMbPxcL8NY";
 
-console.log("Q1: What was the finish position and time of Norris?")
+// Testing the agent
+const video_id = "Pxn276cWKeI";
+
+console.log("Q1: What will people learn from this video?")
 const results = await agent.invoke({
     messages: [
         { 
             role: 'user', 
-            content: 'What was the finish time of Norris? (based on video transcript)' 
+            content: 'What will people learn from the video based on its transcript?' 
         }
     ]
   }, 
