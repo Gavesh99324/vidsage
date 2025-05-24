@@ -2,8 +2,6 @@ import { ChatAnthropic } from "@langchain/anthropic";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { tool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { MemorySaver } from "@langchain/langgraph";
@@ -16,26 +14,7 @@ import data from './data.js';
 
 //Data
 const video1 = data[0];
-const docs = [new Document({ pageContent: video1.transcript, metadata: {video_id: video1.video_id}})]
 
-//Split the video into chunks
-const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
-});
-
-
-//Embed the chunks
-const chunks = await splitter.splitDocuments(docs);
-
-const embeddings = new OpenAIEmbeddings({
-    modelName: 'text-embedding-3-large',
-    openAIApiKey: process.env.OPENAI_API_KEY,
-});
-
-const vectorStore = new MemoryVectorStore(embeddings);
-
-await vectorStore.addDocuments(chunks);
 
 //Retrieve the most relevant chunks
 const retrievedDocs = await vectorStore.similaritySearch('What was the finish time of the Norris?', 1);
