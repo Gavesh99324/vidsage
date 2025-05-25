@@ -26,7 +26,7 @@ const retrieveTool = tool(
             const retrievedDocs = await vectorStore.similaritySearch(
                 query, 
                 3, 
-                (doc) => doc.metadata.video_id === video_id
+                { video_id }
             );
 
         const serializedDocs = retrievedDocs
