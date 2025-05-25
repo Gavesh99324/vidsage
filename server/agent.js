@@ -7,7 +7,14 @@ import { vectorStore, addYTVideoToVectorStore } from "./embeddings.js";
 import dotenv from "dotenv";
 import data from './data.js';
 
+
 dotenv.config();
+
+// Debug logging
+console.log('Environment variables loaded:');
+console.log('ANTHROPIC_API_KEY exists:', !!process.env.ANTHROPIC_API_KEY);
+console.log('DB_URL exists:', !!process.env.DB_URL);
+console.log('HF_API_KEY exists:', !!process.env.HF_API_KEY);
 
 //Data
 await addYTVideoToVectorStore(data[0]);
@@ -31,7 +38,7 @@ const retrieveTool = tool(
     name: 'retrieve',
     description: 'Retrieve tho most relevant chunks of text from the transcript of a youtube video',
     schema: z.object({
-        query: z.string(),
+        query: z.string(), 
     })
 });
 
@@ -54,8 +61,8 @@ const results = await agent.invoke({
         { 
             role: 'user', 
             content: 'What will people learn from the video based on its transcript?' 
-        }
-    ]
+        },
+    ],
   }, 
   { configurable: { thread_id: 1, video_id }}
 );
