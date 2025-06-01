@@ -1,5 +1,5 @@
 {
-  "name": "vidsage-server",
+  "name": "server",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -11,20 +11,17 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@huggingface/inference": "^2.8.1",
-    "@langchain/anthropic": "^0.1.21",
-    "@langchain/community": "^0.3.44",
-    "@langchain/core": "^0.3.57",
-    "@langchain/langgraph": "^0.2.73",
-    "@langchain/openai": "^0.5.11",
+    "@langchain/anthropic": "^0.3.15",
+    "@langchain/community": "^0.3.36",
+    "@langchain/core": "^0.3.42",
+    "@langchain/langgraph": "^0.2.57",
+    "@langchain/openai": "^0.4.5",
     "@langchain/textsplitters": "^0.1.0",
-    "@types/express": "^5.0.2",
+    "@types/express": "^5.0.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^5.1.0",
-    "langchain": "^0.3.27",
-    "pg": "^8.16.0",
-    "vidsage-server": "file:",
-    "zod": "^3.25.20"
+    "express": "^4.21.2",
+    "langchain": "^0.3.19",
+    "pg": "^8.14.1",
+    "zod": "^3.24.2"
   }
 }
