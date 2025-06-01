@@ -18,7 +18,7 @@ backend:
 frontend:
   path: client
   publish: dist
-  script: 
+  scripts: 
     deploy: npm run build
   environment:
     VITE_API_URL: ${{ backend.functions.api.url }}
