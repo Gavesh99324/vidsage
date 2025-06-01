@@ -1,0 +1,24 @@
+name: VidSage
+region: us-east-1
+yamlVersion: 2
+
+backend:
+  path: server
+  language:
+    name: js
+    packageManager: npm
+  environment:
+    API_URL: ${{ backend.functions.api.url }}
+  functions:
+    - name: api
+      path: ./
+      entry: index.js
+      type: httpServer
+
+frontend:
+  path: client
+  publish: dist
+  script: 
+    deploy: npm run build
+  environment:
+    VITE_API_URL: ${{ backend.functions.api.url }}
